@@ -1,0 +1,97 @@
+.page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    background: rgb(101, 67, 33);
+
+    overflow: hidden;
+}
+
+.scroller {
+    display: grid;
+    position: absolute;
+    top: calc(60px + 0.8rem + 30px);
+    left: 0;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 0;
+    gap: calc(0.8rem + 30px);
+
+    height: calc(100% - (60px + 0.8rem + 30px));
+    min-width: 100%;
+}
+
+.shelf {
+    background: rgb(43, 23, 4);
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+    z-index: 0;
+
+    margin: 0 20px;
+}
+
+.modal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modalContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background: rgb(101, 67, 33);
+    border-radius: 10px;
+    padding: 20px;
+
+    color: #D7B264;
+}
+
+.right {
+    padding-left: 20px;
+    height: 100%;
+}
+
+.left {
+    display: flex;
+
+    padding-right: 20px;
+
+    height: 100%;
+    align-items: end;
+
+    a {
+        margin: 0;
+        padding: 0 10px;
+
+        text-decoration: none;
+        color: #D7B264;
+    }
+}
+
+.topBar {
+    width: 100vw;
+    height: 60px;
+
+    color: #D7B264;
+
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    flex-direction: row;
+    justify-content: space-between;
+}
