@@ -1,0 +1,22 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy-frontend:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      # build and tag the docker image
+      - name: Build and tag docker image
+        run: docker build -t localhost:5000/tqsrec-frontend:latest frontend
+
+      # push the docker image to the registry
+      - name: Push docker image
+        run: docker push localhost:5000/tqsrec-frontend:latest
+
+      # deploy using kubectl
+      - name: Deploy to Kubernetes
+        run: kubectl rollout restart deployment frontend -n tqs
