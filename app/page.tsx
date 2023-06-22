@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import Book from "@/components/Book";
 import {BookType} from "@/types";
 import Link from "next/link";
+import {fetchAllProducts} from "@/actions/actions";
 
 
 export default function Home() {
@@ -12,32 +13,12 @@ export default function Home() {
     const [books, setBooks] = useState<BookType[]>([]);
     const [selected, setSelected] = useState<number | null>(null);
 
-    const colors = [
-        '#FCC565',
-        '#E3594D',
-        '#6DC9A4',
-        '#37496D',
-        '#D7604A',
-        '#F6F7F1'
-    ];
-
     const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
     useEffect(() => {
-        const newBooks: BookType[] = [];
-        let previousColor: string = '';
-        for (let i = 0; i < 100; i++) {
-            const possibleColors = colors.filter((color) => color !== previousColor);
-            const color = possibleColors[Math.floor(Math.random() * possibleColors.length)];
-
-            newBooks.push({
-                height: Math.random() * 15 + 80,
-                title: 'Book ' + i,
-                color: color
-            });
-            previousColor = color;
-        }
-        setBooks(newBooks)
+        fetchAllProducts().then(res => {
+            setBooks(res);
+        })
 
         document.addEventListener('wheel', (e) => {
             const scroller = document.getElementById('scroller');
@@ -67,13 +48,13 @@ export default function Home() {
                 }} id='scroller'>
                     {books && <div className={styles.shelf}>
                         {books.slice(0, Math.floor(books.length / 2)).map((book, index) => (
-                            <Book key={index} book={book} onClick={() => setSelected(index)} />
+                            <Book key={index} book={{...book, title: book.title.length > 10 ? book.title.substring(0, 10) + '...' : book.title}} onClick={() => setSelected(index)} />
                         ))}
                     </div>}
 
                     {books && <div className={styles.shelf}>
                         {books.slice(Math.floor(books.length / 2)).map((book, index) => (
-                            <Book key={index} book={book} onClick={() => setSelected(index)} />
+                            <Book key={index} book={{...book, title: book.title.length > 10 ? book.title.substring(0, 10) + '...' : book.title}} onClick={() => setSelected(index)} />
                         ))}
                     </div>
                     }
@@ -82,7 +63,11 @@ export default function Home() {
 
             {selected !== null && <div className={styles.modal} onClick={() => setSelected(null)}>
                 <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                    <h1>{books[selected].title}</h1>
+                    <h2 className={styles.title}>{ books[selected].title }</h2>
+                    <p className={styles.description}>{ books[selected].description }</p>
+                    <p>Author: { books[selected].author }</p>
+                    <p>Price: { books[selected].price }$</p>
+                    <button className={styles.close} onClick={() => setSelected(null)}>Close</button>
                 </div>
             </div>}
         </>
