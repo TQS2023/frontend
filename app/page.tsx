@@ -1,17 +1,20 @@
 'use client';
 
 import styles from '@/styles/home.module.scss';
-import {useEffect, useState} from "react";
-import Book from "@/components/Book";
-import {BookType} from "@/types";
-import Link from "next/link";
-import {fetchAllProducts} from "@/actions/actions";
+import { useContext, useEffect, useState } from "react";
+import Book from "@/components/book";
+import { BookType, ShoppingCartContextType } from "@/types";
+import { fetchAllProducts } from "@/actions/actions";
+import { FaShoppingCart } from "react-icons/fa";
+import { ShoppingCartContext } from "@/contexts/shopping";
 
 
 export default function Home() {
     const [scroll, setScroll] = useState(0);
     const [books, setBooks] = useState<BookType[]>([]);
     const [selected, setSelected] = useState<number | null>(null);
+
+    const shoppingCart = useContext<ShoppingCartContextType>(ShoppingCartContext);
 
     const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -30,19 +33,14 @@ export default function Home() {
 
     }, []);
 
+    function addToCart(bookType: BookType) {
+        shoppingCart.items.push(bookType);
+        shoppingCart.totalValue += bookType.price;
+    }
+
     return (
         <>
             <div className={styles.page}>
-                <div className={styles.topBar}>
-                    <div className={styles.right}>
-                        <h1>E-Library</h1>
-                    </div>
-                    <div className={styles.left}>
-                        <Link href='/login'>Login</Link>
-                        <Link href='/cart'>Cart</Link>
-                    </div>
-                </div>
-
                 <div className={styles.scroller} style={{
                     left: scroll + 'px'
                 }} id='scroller'>
@@ -63,11 +61,25 @@ export default function Home() {
 
             {selected !== null && <div className={styles.modal} onClick={() => setSelected(null)}>
                 <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                    <button className={styles.close} onClick={() => setSelected(null)}>Close</button>
+
                     <h2 className={styles.title}>{ books[selected].title }</h2>
                     <p className={styles.description}>{ books[selected].description }</p>
-                    <p>Author: { books[selected].author }</p>
-                    <p>Price: { books[selected].price }$</p>
-                    <button className={styles.close} onClick={() => setSelected(null)}>Close</button>
+
+                    <div className={styles.informationTable}>
+                        <b>Author:</b>
+                        <p>{ books[selected].author }</p>
+
+                        <b>Price:</b>
+                        <p>{ books[selected].price }$</p>
+
+                        <button
+                            className={styles.addToCart}
+                            onClick={() => addToCart(books[selected])}
+                        >
+                            Add to cart<FaShoppingCart />
+                        </button>
+                    </div>
                 </div>
             </div>}
         </>
