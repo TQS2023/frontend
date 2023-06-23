@@ -2,14 +2,20 @@
 
 import { useContext, useEffect, useState } from "react";
 import { ShoppingCartContext } from "@/contexts/shopping";
-import { BookType, ShoppingCartContextType } from "@/types";
+import {BookType, ShoppingCartContextType, UserContextType} from "@/types";
 import styles from "@/styles/cart.module.scss";
+import {order} from "@/actions/actions";
+import {useRouter} from "next/navigation";
+import {UserContext} from "@/contexts/auth";
 
 export default function Cart() {
     const [items, setItems] = useState<BookType[]>([]);
     const [totalValue, setTotalValue] = useState<number>(0);
 
     const shoppingCart = useContext<ShoppingCartContextType>(ShoppingCartContext);
+    const userContext = useContext<UserContextType>(UserContext);
+
+    const router = useRouter();
 
     useEffect(() => {
         setItems(shoppingCart.items);
@@ -64,6 +70,15 @@ export default function Cart() {
                     </li>
                 ))}
             </ul>
+
+            {userContext.token && (
+                <button onClick={() => {
+                    order(userContext.token!, shoppingCart.items);
+                    shoppingCart.items = [];
+                    shoppingCart.totalValue = 0;
+                    router.push("/");
+                }}>Checkout</button>
+            )}
         </div>
     );
 }
