@@ -1,6 +1,6 @@
 'use server';
 
-import {ALL_PRODUCTS_API, LOGIN_API, REGISTER_API} from "@/backend";
+import {ALL_PRODUCTS_API, CREATE_ORDER_API, LOGIN_API, REGISTER_API} from "@/backend";
 import {BookListType, BookType, ProfileType, TokenResponseType, UserType} from "@/types";
 
 const colors = [
@@ -84,4 +84,20 @@ export async function profile(token: string): Promise<ProfileType | null> {
 
     const jsonResponse = await response.json();
     return jsonResponse as ProfileType;
+}
+
+export async function order(token: string, books: BookType[]): Promise<boolean> {
+    const response = await fetch(CREATE_ORDER_API, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            products: books.map(book => book.productId)
+        }),
+        cache: "no-cache"
+    });
+
+    return response.status === 200 && (await response.json()).success;
 }

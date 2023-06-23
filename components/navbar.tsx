@@ -17,7 +17,7 @@ export default function Navbar() {
                 </h1>
             </div>
             <div className={styles.left}>
-                {userContext.token !== null && <Link href='/signin'>Sign In</Link>}
+                {!userContext.token && <Link href='/signin'>Sign In</Link>}
                 <Link href='/cart'>Cart</Link>
             </div>
         </div>
