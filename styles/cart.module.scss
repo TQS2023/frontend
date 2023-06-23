@@ -1,0 +1,51 @@
+.page {
+    background: #2B1704FF;
+
+    min-height: calc(100vh - 70px);
+    max-width: 100%;
+
+    padding: 70px 20px 0 20px;
+
+    color: #D7B264;
+}
+
+.items {
+    list-style: none;
+    padding: 0;
+
+    .item {
+        position: relative;
+        padding: 20px 0;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        justify-items: center;
+        align-items: baseline;
+
+        justify-content: space-between;
+    }
+
+    .btn {
+        background: #D7B264;
+        color: #2B1704FF;
+
+        border: none;
+
+        padding: 10px 20px;
+
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background: #947a44;
+    }
+
+    hr {
+        position: absolute;
+        border-color: #D7B264;
+
+        bottom: 0;
+        left: -20px;
+        right: -20px;
+    }
+}
