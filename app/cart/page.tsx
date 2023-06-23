@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useContext, useEffect, useState } from "react";
 import { ShoppingCartContext } from "@/contexts/shopping";
 import { BookType, ShoppingCartContextType } from "@/types";
@@ -45,8 +44,6 @@ export default function Cart() {
             }
         }
     }
-
-    console.log(shoppingCart)
 
     return (
         <div className={styles.page}>
