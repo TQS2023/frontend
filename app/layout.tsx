@@ -1,6 +1,8 @@
 import { Montserrat } from 'next/font/google';
 import '@/styles/globals.scss'
 import Navbar from "@/components/navbar";
+import { UserContext } from '@/contexts/auth';
+import { ShoppingCartContext } from '@/contexts/shopping';
 
 
 const inter = Montserrat({ subsets: ['latin'] });
@@ -18,8 +20,12 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body className={inter.className}>
-            <Navbar />
-            {children}
+            <UserContext.Provider value={{token: null}}>
+                <ShoppingCartContext.Provider value={{items: [], totalValue: 0}}>
+                    <Navbar />
+                    {children}
+                </ShoppingCartContext.Provider>
+            </UserContext.Provider>
         </body>
         </html>
     );
