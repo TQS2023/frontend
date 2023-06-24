@@ -56,14 +56,14 @@ export default function Cart() {
             <h1>Cart</h1>
             <p>Total: ${totalValue}</p>
 
-            <ul className={styles.items}>
+            <ul className={styles.items} id="cart">
                 {items.map((item) => (
                     <li className={styles.item} key={item.productId}>
                         <p>{item.title}</p>
                         <p>${item.price}</p>
                         <div className={styles.btnGroup}>
                             <button className={styles.btn} onClick={() => decreaseItem(item)}>-</button>
-                            <button className={styles.btn} onClick={() => clearItem(item)}>Remove</button>
+                            <button className={styles.btn + " removeFromCart"} onClick={() => clearItem(item)}>Remove</button>
                             <button className={styles.btn} onClick={() => increaseItem(item)}>+</button>
                         </div>
                         <hr />
