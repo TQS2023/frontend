@@ -22,8 +22,8 @@ export default function Navbar() {
                 </h1>
             </div>
             <div className={styles.left}>
-                {!signedin && <Link href='/signin'>Sign In</Link>}
-                <Link href='/cart'>Cart</Link>
+                {!signedin && <Link href='/signin' id="signin">Sign In</Link>}
+                <Link href='/cart' id="cart">Cart</Link>
             </div>
         </div>
     );
