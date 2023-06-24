@@ -2,12 +2,17 @@
 
 import styles from "@/styles/navbar.module.scss";
 import Link from "next/link";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "@/contexts/auth";
 import {UserContextType} from "@/types";
 
 export default function Navbar() {
     const userContext = useContext<UserContextType>(UserContext);
+    const [signedin, setSignedin] = useState<boolean>(false);
+
+    useEffect(() => {
+        setSignedin(userContext.token !== null);
+    }, [userContext.token]);
 
     return (
         <div className={styles.topBar}>
@@ -17,7 +22,7 @@ export default function Navbar() {
                 </h1>
             </div>
             <div className={styles.left}>
-                {!userContext.token && <Link href='/signin'>Sign In</Link>}
+                {!signedin && <Link href='/signin'>Sign In</Link>}
                 <Link href='/cart'>Cart</Link>
             </div>
         </div>
