@@ -17,11 +17,11 @@ export default function SignUp() {
     const [creditCardCVC, setCreditCardCVC] = useState("");
     const [preferredPickupPointId, setPreferredPickupPointId] = useState("");
     
-    const userContext = useContext<UserContextType>(UserContext);
+    const {data: userData, setData: setUserData} = useContext<UserContextType>(UserContext);
 
     const router = useRouter();
 
-    if (userContext.token) {
+    if (userData.token) {
         router.push("/");
     }
 
@@ -45,7 +45,7 @@ export default function SignUp() {
                     if (res === null || !res.success) {
                         alert("Error registering");
                     } else {
-                        userContext.token = res.token;
+                        setUserData({ token: res.token });
                         router.push("/");
                     }
                 });
