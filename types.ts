@@ -14,8 +14,11 @@ export type BookListType = {
 }
 
 export type ShoppingCartContextType = {
-    items: BookType[],
-    totalValue: number,
+    data: {
+        items: BookType[],
+        totalValue: number,
+    },
+    setData: (data: { items: BookType[], totalValue: number }) => void
 }
 
 export type TokenResponseType = {
@@ -49,5 +52,21 @@ export type PickupPointType = {
 }
 
 export type UserContextType = {
-    token: string | null
+    data: {
+        token: string | null
+    },
+    setData: (data: { token: string | null }) => void
+}
+
+export type PackageType = {
+    packageId: string,
+    status: string,
+    books: BookType[],
+    items: string[],
+    address: string,
+}
+
+export type PackageListingType = {
+    success: boolean,
+    packages: PackageType[]
 }

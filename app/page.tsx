@@ -14,7 +14,7 @@ export default function Home() {
     const [books, setBooks] = useState<BookType[]>([]);
     const [selected, setSelected] = useState<number | null>(null);
 
-    const shoppingCart = useContext<ShoppingCartContextType>(ShoppingCartContext);
+    const {data: cartData, setData: setCartData} = useContext<ShoppingCartContextType>(ShoppingCartContext);
 
     const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -33,9 +33,11 @@ export default function Home() {
 
     }, []);
 
-    function addToCart(bookType: BookType) {
-        shoppingCart.items.push(bookType);
-        shoppingCart.totalValue += bookType.price;
+    function addToCart(book: BookType) {
+        setCartData({
+            items: [...cartData.items, book],
+            totalValue: cartData.totalValue + book.price
+        })
     }
 
     return (

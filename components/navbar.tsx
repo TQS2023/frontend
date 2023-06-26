@@ -7,12 +7,12 @@ import {UserContext} from "@/contexts/auth";
 import {UserContextType} from "@/types";
 
 export default function Navbar() {
-    const userContext = useContext<UserContextType>(UserContext);
+    const {data: userData} = useContext<UserContextType>(UserContext);
     const [signedin, setSignedin] = useState<boolean>(false);
 
     useEffect(() => {
-        setSignedin(userContext.token !== null);
-    }, [userContext.token]);
+        setSignedin(userData.token !== null);
+    }, [userData.token]);
 
     return (
         <div className={styles.topBar}>

@@ -12,40 +12,45 @@ export default function Cart() {
     const [items, setItems] = useState<BookType[]>([]);
     const [totalValue, setTotalValue] = useState<number>(0);
 
-    const shoppingCart = useContext<ShoppingCartContextType>(ShoppingCartContext);
-    const userContext = useContext<UserContextType>(UserContext);
+    const {data: cartData, setData: setCartData} = useContext<ShoppingCartContextType>(ShoppingCartContext);
+    const {data: userData} = useContext<UserContextType>(UserContext);
 
     const router = useRouter();
 
     useEffect(() => {
-        setItems(shoppingCart.items);
-        setTotalValue(shoppingCart.totalValue);
-    }, []);
+        setItems(cartData.items);
+        setTotalValue(cartData.totalValue);
+    }, [cartData]);
 
     function clearItem(book: BookType) {
-        shoppingCart.totalValue = shoppingCart.totalValue - shoppingCart.items.filter((item) => item.productId === book.productId).length * book.price;
-        shoppingCart.items = shoppingCart.items.filter((item) => item.productId !== book.productId);
-
-        setItems(shoppingCart.items);
-        setTotalValue(shoppingCart.totalValue);
+        setCartData({
+            totalValue: cartData.totalValue - cartData.items.filter((item) => item.productId === book.productId).length * book.price,
+            items: cartData.items.filter((item) => item.productId !== book.productId)
+        })
+        setItems(cartData.items);
+        setTotalValue(cartData.totalValue);
     }
 
     function increaseItem(book: BookType) {
-        shoppingCart.items.push(book);
-        shoppingCart.totalValue += book.price;
+        setCartData({
+            totalValue: cartData.totalValue + book.price,
+            items: [...cartData.items, book]
+        })
 
-        setItems(shoppingCart.items);
-        setTotalValue(shoppingCart.totalValue);
+        setItems(cartData.items);
+        setTotalValue(cartData.totalValue);
     }
 
     function decreaseItem(book: BookType) {
-        for (let i = 0; i < shoppingCart.items.length; i++) {
-            if (shoppingCart.items[i].productId === book.productId) {
-                shoppingCart.items.splice(i, 1);
-                shoppingCart.totalValue -= book.price;
+        for (let i = 0; i < cartData.items.length; i++) {
+            if (cartData.items[i].productId === book.productId) {
+                setCartData({
+                    totalValue: cartData.totalValue - book.price,
+                    items: [...cartData.items.slice(0, i), ...cartData.items.slice(i + 1)]
+                });
 
-                setItems(shoppingCart.items);
-                setTotalValue(shoppingCart.totalValue);
+                setItems(cartData.items);
+                setTotalValue(cartData.totalValue);
                 break;
             }
         }
@@ -71,11 +76,13 @@ export default function Cart() {
                 ))}
             </ul>
 
-            {userContext.token && (
+            {userData.token && (
                 <button onClick={() => {
-                    order(userContext.token!, shoppingCart.items);
-                    shoppingCart.items = [];
-                    shoppingCart.totalValue = 0;
+                    order(userData.token!, cartData.items);
+                    setCartData({
+                        totalValue: 0,
+                        items: []
+                    });
                     router.push("/");
                 }}>Checkout</button>
             )}
