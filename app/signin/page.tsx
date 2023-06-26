@@ -12,11 +12,11 @@ export default function SignIn() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const userContext = useContext<UserContextType>(UserContext);
+    const {data: userData, setData: setUserData} = useContext<UserContextType>(UserContext);
 
     const router = useRouter();
 
-    if (userContext.token) {
+    if (userData.token) {
         router.push('/');
     }
 
@@ -31,7 +31,7 @@ export default function SignIn() {
                     if (response === null || !response.success) {
                         alert('Invalid credentials');
                     } else {
-                        userContext.token = response.token;
+                        setUserData({ token:  response.token });
                         router.push('/');
                     }
                 });
