@@ -1,10 +1,10 @@
 'use client';
 
-import {useContext, useState} from "react";
-import {register} from "@/actions/actions";
+import {useContext, useEffect, useState} from "react";
+import {fetchPickupPoints, register} from "@/actions/actions";
 import Link from "next/link";
 import styles from "@/styles/signup.module.scss";
-import {UserContextType} from "@/types";
+import {PickupPointType, UserContextType} from "@/types";
 import {UserContext} from "@/contexts/auth";
 import {useRouter} from "next/navigation";
 
@@ -16,10 +16,20 @@ export default function SignUp() {
     const [creditCardValidity, setCreditCardValidity] = useState("");
     const [creditCardCVC, setCreditCardCVC] = useState("");
     const [preferredPickupPointId, setPreferredPickupPointId] = useState("");
-    
+
+    const [pickupPoints, setPickupPoints] = useState<PickupPointType[]>([]);
+
     const {data: userData, setData: setUserData} = useContext<UserContextType>(UserContext);
 
     const router = useRouter();
+
+    useEffect(() => {
+        fetchPickupPoints()
+            .then(res => {
+                console.log(res)
+                setPickupPoints(res);
+            })
+    },  []);
 
     if (userData.token) {
         router.push("/");
@@ -76,7 +86,11 @@ export default function SignUp() {
                 </label>
                 <label className={styles.label}>
                     <p>Preferred pickup point id</p>
-                    <input className={styles.input} type="text" placeholder="Preferred pickup point id" value={preferredPickupPointId} onChange={ev => setPreferredPickupPointId(ev.target.value)}/>
+                    <select name="preferredPickupPointId" className={styles.input} value={preferredPickupPointId} onChange={ev => setPreferredPickupPointId(ev.target.value)}>
+                        {pickupPoints.map(pickupPoint => (
+                            <option key={pickupPoint.id} value={pickupPoint.id}>{pickupPoint.name}</option>
+                        ))}
+                    </select>
                 </label>
 
                 <button type="submit">Sign up</button>

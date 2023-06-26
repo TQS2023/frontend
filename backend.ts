@@ -5,4 +5,5 @@ export const PRODUCT_API = BASE_URL + '/product/';
 export const LOGIN_API = BASE_URL + '/auth/login';
 export const REGISTER_API = BASE_URL + '/auth/register';
 export const CREATE_ORDER_API = BASE_URL + '/order/create';
-export const GET_ORDERS_API = BASE_URL + '/order/my';
+export const MY_PACKAGES_API = BASE_URL + '/order/my';
+export const ALL_PICKUP_POINTS_API = BASE_URL + "/pickuppoints/all"

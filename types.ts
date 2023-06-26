@@ -57,3 +57,16 @@ export type UserContextType = {
     },
     setData: (data: { token: string | null }) => void
 }
+
+export type PackageType = {
+    packageId: string,
+    status: string,
+    books: BookType[],
+    items: string[],
+    address: string,
+}
+
+export type PackageListingType = {
+    success: boolean,
+    packages: PackageType[]
+}
