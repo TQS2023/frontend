@@ -54,7 +54,7 @@ export default function Home() {
 
                     {books && <div className={styles.shelf} id="bottomShelf">
                         {books.slice(Math.floor(books.length / 2)).map((book, index) => (
-                            <Book key={index} book={{...book, title: book.title.length > 10 ? book.title.substring(0, 10) + '...' : book.title}} onClick={() => setSelected(index)} />
+                            <Book key={index} book={{...book, title: book.title.length > 10 ? book.title.substring(0, 10) + '...' : book.title}} onClick={() => setSelected(index + Math.floor(books.length / 2))} />
                         ))}
                     </div>
                     }
