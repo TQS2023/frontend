@@ -23,6 +23,7 @@ export default function Navbar() {
             </div>
             <div className={styles.left}>
                 {!signedin && <Link href='/signin' id="signin">Sign In</Link>}
+                {signedin && <Link href='/packages' id="packages">Track</Link>}
                 <Link href='/cart' id="cart">Cart</Link>
             </div>
         </div>
