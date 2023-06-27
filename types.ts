@@ -46,7 +46,7 @@ export type ProfileType = {
 }
 
 export type PickupPointType = {
-    id: string,
+    pickupPointId: string,
     name: string,
     address: string,
 }

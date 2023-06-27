@@ -88,7 +88,7 @@ export default function SignUp() {
                     <p>Preferred pickup point id</p>
                     <select name="preferredPickupPointId" className={styles.input} value={preferredPickupPointId} onChange={ev => setPreferredPickupPointId(ev.target.value)}>
                         {pickupPoints.map(pickupPoint => (
-                            <option key={pickupPoint.id} value={pickupPoint.id}>{pickupPoint.name}</option>
+                            <option key={pickupPoint.pickupPointId} value={pickupPoint.pickupPointId}>{pickupPoint.name}</option>
                         ))}
                     </select>
                 </label>
